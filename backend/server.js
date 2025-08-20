@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin:process.env.FORNTEND_URL|| "http://localhost:5173",
+    origin:process.env.FORNTEND_URL|| "https://cosma-beauty-mini-assignment.vercel.app",
     credentials: true, // if you need cookies/auth headers
   })
 );
