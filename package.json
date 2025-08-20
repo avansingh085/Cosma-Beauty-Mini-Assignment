@@ -1,0 +1,12 @@
+{
+  "name": "cosma-beauty",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm --prefix backend run dev",
+    "client": "npm --prefix frontend run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
