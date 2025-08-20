@@ -6,22 +6,43 @@ let db;
 
 export async function initDB() {
   db = await open({
-    filename: ":memory:",  // or "cosma.db" for file
+    filename: ":memory:", // or "cosma.db" for file
     driver: sqlite3.Database,
   });
 
-  // Create tables
+  // Create tables one by one
   await db.exec(`
-    CREATE TABLE concerns (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL);
-    CREATE TABLE treatments (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL);
-    CREATE TABLE concern_treatments (concern_id INTEGER, treatment_id INTEGER);
+    CREATE TABLE concerns (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )
+  `);
+
+  await db.exec(`
+    CREATE TABLE treatments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )
+  `);
+
+  await db.exec(`
+    CREATE TABLE concern_treatments (
+      concern_id INTEGER,
+      treatment_id INTEGER
+    )
+  `);
+
+  await db.exec(`
     CREATE TABLE packages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       clinic_name TEXT,
       package_name TEXT,
       treatment_id INTEGER,
       price REAL
-    );
+    )
+  `);
+
+  await db.exec(`
     CREATE TABLE enquiries (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       package_id INTEGER,
@@ -29,7 +50,7 @@ export async function initDB() {
       user_email TEXT,
       message TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+    )
   `);
 
   // ---- Seed Fake Data ----
@@ -49,7 +70,10 @@ export async function initDB() {
   // Map randomly concern → treatments
   for (let concern_id = 1; concern_id <= concernNames.length; concern_id++) {
     const randomTreatmentId = Math.ceil(Math.random() * treatmentNames.length);
-    await db.run("INSERT INTO concern_treatments (concern_id, treatment_id) VALUES (?, ?)", [concern_id, randomTreatmentId]);
+    await db.run(
+      "INSERT INTO concern_treatments (concern_id, treatment_id) VALUES (?, ?)",
+      [concern_id, randomTreatmentId]
+    );
   }
 
   // Insert packages
@@ -67,7 +91,7 @@ export async function initDB() {
   }
 
   // Insert fake enquiries
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 5; i++) {
     await db.run(
       "INSERT INTO enquiries (package_id, user_name, user_email, message) VALUES (?,?,?,?)",
       [
@@ -78,8 +102,6 @@ export async function initDB() {
       ]
     );
   }
-
-  
 }
 
 export function getDB() {

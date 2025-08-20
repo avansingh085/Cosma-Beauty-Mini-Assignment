@@ -4,13 +4,16 @@ import searchRoutes from "./routes/search.js";
 import enquiryRoutes from "./routes/enquiries.js";
 import adminRoutes from "./routes/admin.js";
 import cors from 'cors';
+
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 app.use(express.json());
 
-
 app.use(
   cors({
-    origin:process.env.FORNTEND_URL|| "http://localhost:3000",
+    origin:process.env.FORNTEND_URL|| "http://localhost:5173",
     credentials: true, // if you need cookies/auth headers
   })
 );
