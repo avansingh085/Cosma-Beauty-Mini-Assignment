@@ -67,7 +67,7 @@ export async function initDB() {
   }
 
   // Insert fake enquiries
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 10; i++) {
     await db.run(
       "INSERT INTO enquiries (package_id, user_name, user_email, message) VALUES (?,?,?,?)",
       [
@@ -79,7 +79,7 @@ export async function initDB() {
     );
   }
 
-  console.log("✅ Fake data seeded");
+  
 }
 
 export function getDB() {
