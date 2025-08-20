@@ -7,15 +7,20 @@ import cors from 'cors';
 const app = express();
 app.use(express.json());
 
-// Routes
-app.use(cors('*'));
+
+app.use(
+  cors({
+    origin:process.env.FORNTEND_URL|| "http://localhost:3000",
+    credentials: true, // if you need cookies/auth headers
+  })
+);
 app.use("/search", searchRoutes);
 app.use("/enquiries", enquiryRoutes);
 app.use("/admin", adminRoutes);
 
 // Init & start
 initDB().then(() => {
-  app.listen(3000, () =>
+  app.listen(process.env.PORT||3000, () =>
     console.log("🚀 Server running on http://localhost:3000")
   );
 });
